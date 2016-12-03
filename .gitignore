@@ -1,4 +1,7 @@
 out/
 bin/
 .settings/
+.idea/
+.directory
 LeetCode.iml
+hs_err_pid7327.log
