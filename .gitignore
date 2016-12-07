@@ -4,4 +4,4 @@ bin/
 .idea/
 .directory
 LeetCode.iml
-hs_err_pid7327.log
+*.log

@@ -8,7 +8,7 @@ public class ListNode {
         val = x;
     }
 
-    public boolean hasNext(){
+    public boolean hasNext() {
         return this.next != null;
     }
 
@@ -16,7 +16,7 @@ public class ListNode {
     public String toString() {
         String num = "" + this.val;
         ListNode pointer = this;
-        while(pointer.hasNext()){
+        while (pointer.hasNext()) {
             pointer = pointer.next;
             num = pointer.val + num;
         }

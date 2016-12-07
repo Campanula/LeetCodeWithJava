@@ -3,34 +3,33 @@ package algorithms;
 import algorithms.model.ListNode;
 
 /**
- * You are given two linked lists representing two non-negative numbers. The
+ * Add Two Numbers
+ * <p>
+ * <p>You are given two linked lists representing two non-negative numbers. The
  * digits are stored in reverse order and each of their nodes contain a single
  * digit. Add the two numbers and return it as a linked list.
- * 
  * <pre>
  * Input: (2 -> 4 -> 3) + (5 -> 6 -> 4)
  * Output: 7 -> 0 -> 8
  * </pre>
- * 
- * @author Chaney
  */
 public class AddTwoLinkedList {
-	ListNode addTwoNumbers(ListNode l1, ListNode l2, int overbit){ //recursive
-		if(l1 == null && l2 == null){
-			return overbit == 0 ? null : new ListNode(overbit);
-		}
-		if (l1 != null && l2 != null) {
-			int value = (l1.val + l2.val + overbit) % 10;
-			overbit = (l1.val + l2.val + overbit) / 10;
-			ListNode ln = new ListNode(value);
-			ln.next = addTwoNumbers(l1.next, l2.next, overbit);
-			return ln;
-		} else {
-			return overbit ==0 ? (l1 != null ? l1 : l2) : addTwoNumbers((l1 != null ? l1 : l2), new ListNode(overbit));
-		}
-	}
+    ListNode addTwoNumbers(ListNode l1, ListNode l2, int overbit) { //recursive
+        if (l1 == null && l2 == null) {
+            return overbit == 0 ? null : new ListNode(overbit);
+        }
+        if (l1 != null && l2 != null) {
+            int value = (l1.val + l2.val + overbit) % 10;
+            overbit = (l1.val + l2.val + overbit) / 10;
+            ListNode ln = new ListNode(value);
+            ln.next = addTwoNumbers(l1.next, l2.next, overbit);
+            return ln;
+        } else {
+            return overbit == 0 ? (l1 != null ? l1 : l2) : addTwoNumbers((l1 != null ? l1 : l2), new ListNode(overbit), 0);
+        }
+    }
 
-	public ListNode addTwoNumbers(ListNode l1, ListNode l2) { //norecursive
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) { //norecursive
         //链头
         ListNode dummyHead = new ListNode(0);
         //指针
@@ -45,7 +44,7 @@ public class AddTwoLinkedList {
             l1 = l1.next;
             l2 = l2.next;
         }
-        if(l1 == null && l2 == null){
+        if (l1 == null && l2 == null) {
             curr.next = (carry == 0 ? null : new ListNode(carry));
             return dummyHead.next;
         }
@@ -56,7 +55,7 @@ public class AddTwoLinkedList {
         //另一个指针
         ListNode curr2 = dummyHead2;
         //糅合剩下的一条链 和 进位链：carry
-        while(carry != 0 && left != null){
+        while (carry != 0 && left != null) {
             int sum = carry + left.val;
             carry = sum / 10;
             curr2.next = new ListNode(sum % 10);
