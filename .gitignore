@@ -1,7 +1,8 @@
-out/
-bin/
-.settings/
 .idea/
+.settings/
+bin/
+out/
 .directory
+javac-services.*
 LeetCode.iml
 *.log

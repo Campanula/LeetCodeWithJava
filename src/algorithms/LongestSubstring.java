@@ -15,7 +15,7 @@ import java.util.Map;
  * </pre>
  */
 public class LongestSubstring {
-    public int LongestSubstring(String s) {
+    public int longestSubstring(String s) {
         char[] cs = s.toCharArray();
         int max = 0, head = 0, pointer = 0, tmp = 0;
 

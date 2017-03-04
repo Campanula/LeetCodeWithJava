@@ -1,0 +1,13 @@
+{
+    "version": "0.1.0",
+    "command": "javac",
+    "isShellCommand": true,
+    "echoCommand": true,
+    "showOutput": "always",
+    "isBackground": true,
+    "suppressTaskName": true,
+    "tasks": [{
+        "taskName": "build",
+        "args": ["-J-Duser.language=en", "-g", "${file}"]
+    }]
+}
