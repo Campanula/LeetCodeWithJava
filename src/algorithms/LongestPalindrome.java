@@ -1,58 +1,82 @@
 package algorithms;
 
+/**
+ * <h>Longest Palindromic Substring</h>
+ * <p>Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000.</p>
+ * Example:
+ * <pre>
+ * Input: "babad"
+ * Output: "bab"
+ * Note: "aba" is also a valid answer.
+ * </pre>
+ * Example:
+ * <pre>
+ * Input: "cbbd"
+ * Output: "bb"
+ * </pre>
+ */
+
 public class LongestPalindrome {
+    /**
+     * 暴力搜索
+     */
     public String longestPalindrome(String s) {
         char[] cs = s.toCharArray();
-        boolean odd = true;
-        int maxCenter = 0, pointer = 0, halfLengthForSearch = 0;
-        //奇回文
-        while (pointer < cs.length) {
-            if (cs.length - 1 - pointer < halfLengthForSearch) {
-                break;
-            }
-            if (cs[pointer - halfLengthForSearch] == cs[pointer + halfLengthForSearch]) {
-                int halfLength = 1;
-                while (pointer - halfLength >= 0 && pointer + halfLength < cs.length) {
-                    if (cs[pointer - halfLength] == cs[pointer + halfLength]) {
-                        halfLength++;
-                    } else {
-                        break;
+        for (int searchScope = cs.length - 1; searchScope >= 0; searchScope--) {
+            int space = cs.length - searchScope;
+            for (int i = 0; i < space; i++) {
+                if (cs[i] == cs[i + searchScope]) {
+                    boolean isPalindrome = true;
+                    int radius = searchScope / 2;
+                    for (int j = 1; j <= radius; j++) {
+                        if (cs[i + j] != cs[i + searchScope - j]) {
+                            isPalindrome = false;
+                            break;
+                        }
+                    }
+                    if (isPalindrome) {
+                        return s.substring(i, i + searchScope + 1);
                     }
                 }
-                if (halfLength > halfLengthForSearch) {
-                    halfLengthForSearch = halfLength;
-                    maxCenter = pointer;
-                }
             }
-            pointer++;
         }
-        //偶回文以最长奇回文起步再写一遍
-        pointer = halfLengthForSearch;
-        while (pointer < cs.length) {
-            if (cs.length - pointer < halfLengthForSearch) {
-                break;
+        return cs.length > 0 ? s.substring(0, 1) : "";
+    }
+
+    /**
+     * 回文竞价：回文中心为竞价代表，回文半径长的获胜
+     */
+    private int lo = 0, maxLen = 0, searchRadius = 0;
+
+    public String longestPalindromeF(String s) {
+        lo = 0;
+        maxLen = 0;
+        searchRadius = maxLen / 2;
+        char[] c = s.toCharArray();
+        if (c.length < 2) return s;
+
+        for (int i = 1; i + searchRadius + 1 < c.length; i++) {
+            if (c[i - searchRadius - 1] == c[i + searchRadius + 1]) {
+                extendPalindrome(c, i, i);  //assume odd length, try to extend Palindrome as possible
             }
-            if (cs[pointer - halfLengthForSearch] == cs[pointer + halfLengthForSearch - 1]) {
-                int halfLength = 1;
-                while (pointer - halfLength >= 0 && pointer + halfLength <= cs.length) {
-                    if (cs[pointer - halfLength] == cs[pointer + halfLength - 1]) {
-                        halfLength++;
-                    } else {
-                        break;
-                    }
-                }
-                if (halfLength > halfLengthForSearch) {
-                    halfLengthForSearch = halfLength;
-                    maxCenter = pointer;
-                    odd = false;
-                }
-            }
-            pointer++;
         }
-        if (odd) {
-            return s.substring(maxCenter - halfLengthForSearch + 1, maxCenter + halfLengthForSearch);
-        } else {
-            return s.substring(maxCenter - halfLengthForSearch + 1, maxCenter + halfLengthForSearch - 1);
+        for (int i = searchRadius; i + searchRadius + 1 < c.length; i++) {
+            if (c[i - searchRadius] == c[i + searchRadius + 1]) {
+                extendPalindrome(c, i, i + 1); //assume even length.
+            }
+        }
+        return maxLen == 0 ? s.substring(0, 1) : s.substring(lo, lo + maxLen);
+    }
+
+    private void extendPalindrome(char[] c, int j, int k) {
+        while (j >= 0 && k < c.length && c[j] == c[k]) {
+            j--;
+            k++;
+        }
+        if (maxLen < k - j - 1) {
+            lo = j + 1;
+            maxLen = k - j - 1;
+            searchRadius = maxLen / 2;
         }
     }
 }

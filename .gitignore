@@ -6,3 +6,5 @@ out/
 javac-services.*
 LeetCode.iml
 *.log
+.classpath
+.project
